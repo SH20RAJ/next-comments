@@ -67,7 +67,7 @@ const ArticlePage = () => {
 export default ArticlePage;
 ```
 
-### Step 2: Setting Up Utterances
+### Step 2: Setting Up Utterances 
 
 1. Go to your GitHub repository.
 2. Navigate to the "Settings" tab.
