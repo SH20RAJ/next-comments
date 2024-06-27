@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next Comments
 
-## Getting Started
+[![npm version](https://img.shields.io/npm/v/next-comments)](https://www.npmjs.com/package/next-comments)
+[![GitHub stars](https://img.shields.io/github/stars/SH20RAJ/next-comments)](https://github.com/SH20RAJ/next-comments/stargazers)
+[![License](https://img.shields.io/npm/l/next-comments)](https://github.com/SH20RAJ/next-comments/blob/main/LICENSE)
 
-First, run the development server:
+Next Comments is a lightweight, easy-to-use commenting system for Next.js applications, powered by Utterances. It allows you to add a GitHub-powered comments section to your website effortlessly.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- Seamless integration with Next.js
+- Supports App Router
+- Utilizes GitHub issues for comments
+- Automatic theme switching with `next-themes`
+- Customizable and easy to set up
+
+## Installation
+
+Install the package via npm:
+
+```sh
+npm install next-comments
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Step 1: Import and Use the `Comments` Component
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Add the `Comments` component to your Next.js pages. Here’s an example:
 
-## Learn More
+```tsx
+// app/posts/[id]/page.tsx
+'use client';
 
-To learn more about Next.js, take a look at the following resources:
+import { Comments } from 'next-comments';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+const fetchArticle = async (id) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  return res.json();
+};
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+const ArticlePage = () => {
+  const { id } = useParams();
+  const [article, setArticle] = useState(null);
 
-## Deploy on Vercel
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchArticle(id);
+      setArticle(data);
+    };
+    fetchData();
+  }, [id]);
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  if (!article) return <div>Loading...</div>;
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  return (
+    <div>
+      <h1>{article.title}</h1>
+      <p>{article.body}</p>
+      <Comments id={article.id.toString()} />
+    </div>
+  );
+};
+
+export default ArticlePage;
+```
+
+### Step 2: Setting Up Utterances
+
+1. Go to your GitHub repository.
+2. Navigate to the "Settings" tab.
+3. Scroll down to the "Features" section and enable the "Issues" feature.
+4. Visit [utterances/utterances](https://github.com/utterance/utterances) and follow the instructions to configure Utterances for your repository.
+
+### Step 3: Customize the `Comments` Component
+
+The `Comments` component accepts `id` and `repo` as props. If `repo` is not provided, it defaults to `shade-cool/next-comments-vault`.
+
+```tsx
+<Comments id={article.id.toString()} repo="your-github-repo/your-repo-name" />
+```
+
+### Step 4: Theme Switching
+
+Next Comments supports automatic theme switching using `next-themes`. Ensure you have `next-themes` configured in your Next.js project.
+
+## Props
+
+- `id`: A unique identifier for the comment thread, typically the article ID.
+- `repo` (optional): The GitHub repository for storing comments. Defaults to `shade-cool/next-comments-vault`.
+
+## Example
+
+```tsx
+import { Comments } from 'next-comments';
+
+const ExamplePage = () => {
+  return (
+    <div>
+      <h1>Example Article</h1>
+      <p>This is an example article.</p>
+      <Comments id="example-article-id" />
+    </div>
+  );
+};
+
+export default ExamplePage;
+```
+
+## Contributing
+
+Contributions are welcome! Please read the [Contributing Guide](https://github.com/SH20RAJ/next-comments/blob/main/CONTRIBUTING.md) for more information.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/SH20RAJ/next-comments/blob/main/LICENSE) file for details.
+
+## Links
+
+- [npm package](https://www.npmjs.com/package/next-comments)
+- [GitHub repository](https://github.com/SH20RAJ/next-comments)
+
+---
+
+Enhance your Next.js application with a robust commenting system powered by GitHub issues. Integrate Next Comments today and foster community engagement on your platform!
