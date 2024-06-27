@@ -14,14 +14,16 @@ const Comments: React.FC<CommentsProps> = ({ issueTerm, repo = 'shade-cool/next-
   const commentsSection = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://utteranc.es/client.js';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    script.setAttribute('repo', repo);
-    script.setAttribute('issue-term', issueTerm);
-    script.setAttribute('theme', theme === 'dark' ? 'github-dark' : 'github-light');
-    commentsSection.current.appendChild(script);
+    if (commentsSection.current) {
+      const script = document.createElement('script');
+      script.src = 'https://utteranc.es/client.js';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.setAttribute('repo', repo);
+      script.setAttribute('issue-term', issueTerm);
+      script.setAttribute('theme', theme === 'dark' ? 'github-dark' : 'github-light');
+      commentsSection.current.appendChild(script);
+    }
   }, [issueTerm, theme, repo]);
 
   return <div ref={commentsSection} />;
